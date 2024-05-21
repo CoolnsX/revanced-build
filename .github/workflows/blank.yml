@@ -1,4 +1,4 @@
-name: build
+name: Revanced APKs
 
 on:
   push:
