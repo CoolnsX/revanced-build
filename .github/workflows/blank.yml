@@ -21,12 +21,15 @@ jobs:
       - name: Run Revanced Youtube Music
         run: sh revanced youtube-music
 
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v4.3.3
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
         with:
-          name: Upload APKs
-          path: yt-*.apk
-          if-no-files-found: ignore
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: yt-*.apk
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
+          body: "New Releases."
           
              
       - name: auwuto commit uwu
