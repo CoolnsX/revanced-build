@@ -1,8 +1,6 @@
 name: Revanced APKs
 
 on:
-  push:
-    branches: [ "master" ]
   schedule:
     - cron: '*/60 * * * *'
 
