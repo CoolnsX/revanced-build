@@ -1,0 +1,39 @@
+name: build
+
+on:
+  push:
+    branches: [ "master" ]
+  schedule:
+    - cron: '*/60 * * * *'
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Revanced Youtube
+        run: sh revanced youtube
+
+      - name: Run Revanced Youtube Music
+        run: sh revanced youtube-music
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: Upload APKs
+          path: yt-*.apk
+          if-no-files-found: ignore
+          
+             
+      - name: auwuto commit uwu
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "update: New Version"
+          repository: .
+          file_pattern: track
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
