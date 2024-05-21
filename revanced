@@ -30,15 +30,6 @@ track_file="track"
 #check if directory is there
 [ -d "$tmp_dir" ] || mkdir "$tmp_dir"
 
-#pre-requisite
-if [ ! -f "$tmp_dir/$rv_cli.aria2" ] && [ ! -f "$tmp_dir/$rv_patch.aria2" ] && [ ! -f "$tmp_dir/$rv_inte.aria2" ] && [ -f "$tmp_dir/$rv_cli" ] && [ -f "$tmp_dir/$rv_patch" ] && [ -f "$tmp_dir/$rv_inte" ]; then
-	info "revanced-cli,revanced-patches,revanced-integrations already downloaded" "32"
-else
-	rm -f "$tmp_dir"/*.aria2
-	info "Downloading revanced-cli,revanced-patches,revanced-integrations.."
-	printf "%s\n%s\n%s" "$(curl -s "https://api.github.com/repos/revanced/revanced-cli/releases/latest" -L -A "$agent" | sed -nE "s|.*browser_download_url\": \"([^\"]*.jar)\"|\1\n\tout=$rv_cli|p")" "$(curl -s "https://api.github.com/repos/revanced/revanced-patches/releases/latest" -L -A "$agent" | sed -nE "s|.*browser_download_url\": \"([^\"]*.jar)\"|\1\n\tout=$rv_patch|p")" "$(curl -s "https://api.github.com/repos/revanced/revanced-integrations/releases/latest" -L -A "$agent" | sed -nE "s|.*browser_download_url\": \"([^\"]*.apk)\"|\1\n\tout=$rv_inte|p")" | aria2c -j3 -x16 -s16 -i - --check-certificate=false --download-result=hide --summary-interval=0 --allow-overwrite=true -d "$tmp_dir" && info "Downloaded revanced-cli,revanced-patches,revanced-integrations at $tmp_dir"
-fi
-
 #choose your app
 [ -z "$1" ] && app="youtube" || app=$1
 
@@ -64,7 +55,16 @@ case $app in
 		;;
 esac
 
-grep -q "$version" "$track_file" && exit 0
+grep -q "$version" "$track_file" && info "No New Updates for $app." && exit 0
+
+#pre-requisite
+if [ ! -f "$tmp_dir/$rv_cli.aria2" ] && [ ! -f "$tmp_dir/$rv_patch.aria2" ] && [ ! -f "$tmp_dir/$rv_inte.aria2" ] && [ -f "$tmp_dir/$rv_cli" ] && [ -f "$tmp_dir/$rv_patch" ] && [ -f "$tmp_dir/$rv_inte" ]; then
+	info "revanced-cli,revanced-patches,revanced-integrations already downloaded" "32"
+else
+	rm -f "$tmp_dir"/*.aria2
+	info "Downloading revanced-cli,revanced-patches,revanced-integrations.."
+	printf "%s\n%s\n%s" "$(curl -s "https://api.github.com/repos/revanced/revanced-cli/releases/latest" -L -A "$agent" | sed -nE "s|.*browser_download_url\": \"([^\"]*.jar)\"|\1\n\tout=$rv_cli|p")" "$(curl -s "https://api.github.com/repos/revanced/revanced-patches/releases/latest" -L -A "$agent" | sed -nE "s|.*browser_download_url\": \"([^\"]*.jar)\"|\1\n\tout=$rv_patch|p")" "$(curl -s "https://api.github.com/repos/revanced/revanced-integrations/releases/latest" -L -A "$agent" | sed -nE "s|.*browser_download_url\": \"([^\"]*.apk)\"|\1\n\tout=$rv_inte|p")" | aria2c -j3 -x16 -s16 -i - --check-certificate=false --download-result=hide --summary-interval=0 --allow-overwrite=true -d "$tmp_dir" && info "Downloaded revanced-cli,revanced-patches,revanced-integrations at $tmp_dir"
+fi
 
 if [ -f "$tmp_dir/$app-$version.apk" ] && [ ! -f "$tmp_dir/$app-$version.apk.aria2" ]; then
 	info "Latest Recommended $app v$version already downloaded" "32"
