@@ -21,9 +21,15 @@ jobs:
 
       - name: Check for APK files
         id: check_apks
-        run: ls yt-*.apk 1> /dev/null 2>&1 && echo "apks_exist=true" >> "$GITHUB_OUTPUT" || echo "apks_exist=false" >> "$GITHUB_OUTPUT"
+        run: |
+            if ls *.apk 1> /dev/null 2>&1;then 
+                echo "apks_exist='true'" >> "$GITHUB_OUTPUT"
+            else
+                echo "apks_exist='false'" >> "$GITHUB_OUTPUT"
+            fi
+
       - name: Upload binaries to release
-        if: steps.check_apks.outputs.apks_exist == true
+        if: $ {{ steps.check_apks.outputs.apks_exist }} == 'true'
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
