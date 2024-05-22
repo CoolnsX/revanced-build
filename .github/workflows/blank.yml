@@ -13,11 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # - name: Run Revanced Youtube
-      #   run: sh revanced youtube
+      - name: Run Revanced Youtube
+        run: sh revanced youtube
 
-      # - name: Run Revanced Youtube Music
-      #   run: sh revanced youtube-music
+      - name: Run Revanced Youtube Music
+        run: sh revanced youtube-music
 
       - name: Check for APK files
         id: check_apks
@@ -41,11 +41,11 @@ jobs:
           body: "New Releases."
           
              
-      # - name: auwuto commit uwu
-      #   uses: stefanzweifel/git-auto-commit-action@v5
-      #   with:
-      #     commit_message: "update: New Version"
-      #     repository: .
-      #     file_pattern: track
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: auwuto commit uwu
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "update: New Version"
+          repository: .
+          file_pattern: track
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
