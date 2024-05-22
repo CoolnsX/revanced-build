@@ -24,6 +24,7 @@ jobs:
         run: |
             if ls *.apk 1> /dev/null 2>&1;then 
                 echo "apks_exist='true'" >> "$GITHUB_OUTPUT"
+                echo "RELEASE_TAG=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
             else
                 echo "apks_exist='false'" >> "$GITHUB_OUTPUT"
             fi
@@ -34,7 +35,7 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: yt-*.apk
-          tag: ${{ github.ref }}
+          tag:  ${{ steps.check_apks.outputs.RELEASE_TAG }}
           overwrite: true
           file_glob: true
           body: "New Releases."
