@@ -40,6 +40,18 @@ jobs:
           file_glob: true
           body: "New Releases."
           
+      - name: Notify For New Release
+        if: ${{ steps.check_apks.outputs.apks_exist == 'true' }}
+        env:
+          NTFY_URL: ${{ secrets.NTFY_URL }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          NTFY_TOKEN: ${{ secrets.NTFY_TOKEN }}
+          RELEASE_TAG: ${{ steps.check_apks.outputs.RELEASE_TAG }}
+        run: |
+            for i in *.apk;do
+                app_url="https://github.com/$GITHUB_REPOSITORY/releases/download/$RELEASE_TAG/$i"
+                curl -s "$NTFY_URL/$NTFY_TOPIC" -d "$app_url" -H "Authorization: Bearer $NTFY_TOKEN" -H "Download: $(printf "%s" "$i" | tr '-' ' ')" -H "Click: $app_url"
+            done
              
       - name: auwuto commit uwu
         uses: stefanzweifel/git-auto-commit-action@v5
