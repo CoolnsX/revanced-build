@@ -50,7 +50,7 @@ jobs:
         run: |
             for i in *.apk;do
                 app_url="https://github.com/$GITHUB_REPOSITORY/releases/download/$RELEASE_TAG/$i"
-                curl -s "$NTFY_URL/$NTFY_TOPIC" -d "$app_url" -H "Authorization: Bearer $NTFY_TOKEN" -H "Download: $(printf "%s" "$i" | tr '-' ' ')" -H "Click: $app_url"
+                curl -s "$NTFY_URL/$NTFY_TOPIC" -d "$app_url" -H "Authorization: Bearer $NTFY_TOKEN"  -H "Title: Download $(printf "%s" "$i" | tr '-' ' ')" -H "Click: $app_url"
             done
              
       - name: auwuto commit uwu
