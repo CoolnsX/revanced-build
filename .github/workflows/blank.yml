@@ -37,7 +37,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: yt-*.apk
+          file: *.apk
           tag:  ${{ steps.check_apks.outputs.RELEASE_TAG }}
           overwrite: true
           file_glob: true
