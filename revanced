@@ -26,6 +26,7 @@ rv_patch="patches-$date.jar"
 rv_inte="integrations-$date.apk"
 keystore="$(dirname "$0")/yt-revanced.keystore"
 track_file="track"
+corp="google-inc"
 
 #check if directory is there
 [ -d "$tmp_dir" ] || mkdir "$tmp_dir"
@@ -49,8 +50,9 @@ case $app in
 		;;
 	twitter)
 		arch="universal"
-		[ -z "$2" ] && version=$(curl -s "$apk_provider_url/apk/x-corp/$app/" -A "$agent" | sed -nE 's|.*x-corp/twitter/twitter-(.*-release-[0-9])-release/".*|\1|p' | head -1) || version=$2
+		[ -z "$2" ] && version=$(curl -s "$apk_provider_url/apk/$corp/$app/" -A "$agent" | sed -nE 's|.*x-corp/twitter/twitter-(.*-release-[0-9])-release/".*|\1|p' | head -1) || version=$2
 		exclude_patch_list="hide-view-count,sanitize-sharing-links,open-links-with-app-chooser"
+		corp="x-corp"
 		;;
 	*)
 		info "Wrong Package Name, please pass either 'youtube','youtube-music' or 'twitter'" "31"
@@ -74,7 +76,7 @@ if [ -f "$tmp_dir/$app-$version.apk" ] && [ ! -f "$tmp_dir/$app-$version.apk.ari
 	info "Latest Recommended $app v$version already downloaded" "32"
 else
 	info "[ $app ][ v$version ] Fetching App.."
-	download_apk "$(curl -s "$apk_provider_url/apk/google-inc/$app/$app-$version-release/" -A "$agent" --tlsv1.3 | tr -d '\n' | sed 's|svg class|\n|g' | sed -nE "s|.*$arch.*nodpi.*accent_color\" href=\"([^\"]*)\".*|\1|p")"
+	download_apk "$(curl -s "$apk_provider_url/apk/$corp/$app/$app-$version-release/" -A "$agent" --tlsv1.3 | tr -d '\n' | sed 's|svg class|\n|g' | sed -nE "s|.*$arch.*nodpi.*accent_color\" href=\"([^\"]*)\".*|\1|p")"
 fi
 
 info "Checking Patches for excluding.."
