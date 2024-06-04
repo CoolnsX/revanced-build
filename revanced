@@ -49,8 +49,14 @@ case $app in
 		exclude_patch_list=""
 		out="yt-music-revanced-$version.apk"
 		;;
+	twitter)
+		arch="universal"
+		[ -z "$2" ] && version=$(curl -s "$apk_provider_url/apk/x-corp/$app/" -A "$agent" | sed -nE 's|.*x-corp/twitter/twitter-(.*-release-[0-9])-release/".*|\1|p' | head -1) || version=$2
+		exclude_patch_list="hide-view-count,sanitize-sharing-links,open-links-with-app-chooser"
+		out="twitter-revanced-$version.apk"
+		;;
 	*)
-		info "Wrong Package Name, please pass either 'youtube' or 'youtube-music'" "31"
+		info "Wrong Package Name, please pass either 'youtube','youtube-music' or 'twitter'" "31"
 		exit 1
 		;;
 esac
