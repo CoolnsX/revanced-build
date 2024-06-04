@@ -45,7 +45,7 @@ case $app in
 		;;
 	youtube-music)
 		arch="arm64-v8a"
-		[ -z "$2" ] && version="$(curl -s "https://www.apkmirror.com/apk/google-inc/youtube-music/" -A "$agent" | sed -nE 's|.*youtube-music/youtube-music-(.*)-release/".*|\1|p' | head -1)" || version=$2
+		[ -z "$2" ] && version=$(curl -s "https://api.revanced.app/v2/patches/latest" | sed -nE 's|.*youtube.music","versions":\[[0-9\.",]*,"([^\}]*)"\].*|\1|p' | tr '.' '-') || version=$2
 		exclude_patch_list=""
 		out="yt-music-revanced-$version.apk"
 		;;
